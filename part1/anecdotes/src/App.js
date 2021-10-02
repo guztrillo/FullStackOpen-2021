@@ -18,13 +18,12 @@ const App = () => {
   const current = Math.floor(Math.random() * (max+1));
   const [next, setNext] = useState(current)
   const [votes, setVote] = useState(votesArray)
-  console.log(next)
+
   const handleNext = () => {
     setNext(Math.floor(Math.random() * (max+1)))
   }
 
   const handleVote = () => {
-    console.log(next)
     const copy = [...votes];
     copy[next] += 1;
     setVote([...copy]);
