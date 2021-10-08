@@ -1,0 +1,3 @@
+#  Part 2 - Communicating with server
+
+A lot of practice on this one. I get stuck a couple of times with the exercises, that means I'm really enjoying this course. Mostly of this section consists in create a CRUD system, which I've been wanted to practice more and more. There was also a lot of conditional rendering practice, which I found very useful. I can't complain so far, this course seems to be the one I've been looking for.
