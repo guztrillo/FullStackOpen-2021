@@ -6,7 +6,11 @@ export const Courses = ({ courses }) => {
           <div>
                {
                     courses.map(course =>
-                         <Course name={course.name} parts={course.parts} key={course.id}/>
+                         <Course 
+                              name={course.name} 
+                              parts={course.parts} 
+                              key={course.id}
+                         />
                     )
                }
           </div>

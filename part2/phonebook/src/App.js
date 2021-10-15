@@ -32,6 +32,14 @@ const App = () => {
     setFilter(e.target.value)
   }
 
+  const handleMessage = (message, type) => {
+    setMessage(message)
+    setSuccess(type)
+    setTimeout(() => {
+      setMessage(null)
+    }, 3000);
+  }
+
   const handleNewPerson = (e) => {
     e.preventDefault();
     let personIndex;
@@ -46,8 +54,6 @@ const App = () => {
     if (somebody) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         handleUpdate(persons[personIndex].id)
-      } else {
-        return
       }
     } else {
       const newPerson = {
@@ -57,13 +63,9 @@ const App = () => {
       phonebook.createItem(newPerson)
         .then(newContact => {
           setPersons(persons.concat(newContact));
-          setMessage(`Added ${newContact.name}`);
-          setSuccess(true)
-          setTimeout(() => {
-            setMessage(null)
-          }, 3000);
+          handleMessage(`Added ${newContact.name}`, true)
         })
-        .catch(err => console.log(err))
+        .catch(err => handleMessage(err.response.data.error, false))
     }
     setNewName('');
     setNewNumber('')
@@ -75,41 +77,29 @@ const App = () => {
 
     phonebook.updateItem(id, changeNumber)
       .then(updatePerson => {
-        setPersons(persons.map(person => person.id !== id ? person : updatePerson))
-        setMessage(`Updated ${updatePerson.name}`);
-        setSuccess(true)
-        setTimeout(() => {
-          setMessage(null)
-        }, 3000);
+        setPersons(persons.map(person => person.id !== id ? person : updatePerson));
+        handleMessage(`Updated ${updatePerson.name}`, true)
       })
       .catch(err => {
-        setMessage(`Information of ${phone.name} has already been removed from server`)
-        setPersons(persons.filter(person => person.id !== id))
-        setSuccess(false)
-        setTimeout(() => {
-          setMessage(null)
-        }, 3000);
+        handleMessage(err.response.data.error, false)
+        // setPersons(persons.filter(person => person.id !== id))
       })
   }
 
   const handleDelete = (elem) => {
     if (window.confirm(`Delete ${elem.name}?`)) {
-      phonebook.deleteItem(elem.id);
-      setPersons(persons.filter(person => person.id !== elem.id))
-      setMessage(`Deleted ${elem.name}`);
-      setSuccess(true)
-      setTimeout(() => {
-        setMessage(null)
-      }, 3000);
-    } else {
-      return
+      phonebook.deleteItem(elem.id)
+        .then(deleted => {
+          setPersons(persons.filter(person => person.id !== elem.id))
+          handleMessage(`Deleted ${elem.name}`, true)
+        })
     }
   }
-
 
   const personsToShow = filter.length < 1
     ? persons
     : persons.filter(person => person.name.match(regex))
+
   return (
     <div>
       <h2>Phonebook</h2>

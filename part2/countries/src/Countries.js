@@ -19,8 +19,6 @@ export const Countries = ({countries, search, show, handleShow}) => {
           } else if (countries.length === 1) {
                return <Country 
                          country={countries[0]} 
-                         show={show} 
-                         handleShow={handleShow}
                        />
 
           } else if (countries.length === 0) {
